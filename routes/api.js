@@ -40,14 +40,15 @@ module.exports = function (app) {
       updatedAt: 'updated_on'
     }
   });
-  var DataDBinfo = mongoose.model('Blog15', blogSchema);
+  
   app.route('/api/issues/:project')
 
     .get(function (req, res) {
       var project = req.params.project;
-     // console.log('get:' + project+ (req.query.assigned_to));
+    var DataDBinfo = mongoose.model(project, blogSchema);
+     console.log('get:' + project+ (req.query.assigned_to));
     
-     DataDBinfo.find(req.query, function (err, doc) {
+     DataDBinfo.find({}, function (err, doc) {
         if (err) {          res.send(err);        } // handle error
 
   res.json(doc);
@@ -59,7 +60,7 @@ module.exports = function (app) {
 
       var project = req.params.project;
     // console.log('pos t: ' + project + 'body:' + JSON.stringify(req.body));
-
+   var DataDBinfo = mongoose.model(project, blogSchema);
       DataDBinfo.findOne({
           issue_title: req.body.issue_title
         },
@@ -103,7 +104,7 @@ module.exports = function (app) {
       var _id = req.body._id;
     var arr= Object.values(an_obj);
 arr.shift();
-
+   var DataDBinfo = mongoose.model(project, blogSchema);
   if ( arr.every(g=>!Boolean(g)))  {res.json( 'no updated field sent');  return 'no updated field sent';}
       DataDBinfo.findById(_id,
         function (err, docs) {
@@ -134,9 +135,10 @@ arr.shift();
 
     })
 
-    .delete(function (req, res) {
-    
-      var project = req.params.project;
+    .delete(function (req, res) { 
+    var project = req.params.project;
+       var DataDBinfo = mongoose.model(project, blogSchema);
+     
      // console.log('del: ' + project + 'body:' + JSON.stringify(req.body));
       var _id = req.body._id;
     
